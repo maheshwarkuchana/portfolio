@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
@@ -162,77 +162,97 @@ const Menu = () => {
 
   const buttonRef = useRef(null);
   const navRef = useRef(null);
+  const wrapperRef = useRef(null);
 
-  let menuFocusables;
-  let firstFocusableEl;
-  let lastFocusableEl;
+  const menuFocusables = useRef(null);
+  const firstFocusableEl = useRef(null);
+  const lastFocusableEl = useRef(null);
 
-  const setFocusables = () => {
-    menuFocusables = [buttonRef.current, ...Array.from(navRef.current.querySelectorAll('a'))];
-    firstFocusableEl = menuFocusables[0];
-    lastFocusableEl = menuFocusables[menuFocusables.length - 1];
-  };
+  const setFocusables = useCallback(() => {
+    menuFocusables.current = [
+      buttonRef.current,
+      ...Array.from(navRef.current.querySelectorAll('a')),
+    ];
+    firstFocusableEl.current = menuFocusables.current[0];
+    lastFocusableEl.current = menuFocusables.current[menuFocusables.current.length - 1];
+  }, []);
 
-  const handleBackwardTab = e => {
-    if (document.activeElement === firstFocusableEl) {
-      e.preventDefault();
-      lastFocusableEl.focus();
-    }
-  };
-
-  const handleForwardTab = e => {
-    if (document.activeElement === lastFocusableEl) {
-      e.preventDefault();
-      firstFocusableEl.focus();
-    }
-  };
-
-  const onKeyDown = e => {
-    switch (e.key) {
-      case KEY_CODES.ESCAPE:
-      case KEY_CODES.ESCAPE_IE11: {
-        setMenuOpen(false);
-        break;
+  const handleBackwardTab = useCallback(
+    e => {
+      if (document.activeElement === firstFocusableEl.current) {
+        e.preventDefault();
+        lastFocusableEl.current.focus();
       }
+    },
+    [],
+  );
 
-      case KEY_CODES.TAB: {
-        if (menuFocusables && menuFocusables.length === 1) {
-          e.preventDefault();
+  const handleForwardTab = useCallback(
+    e => {
+      if (document.activeElement === lastFocusableEl.current) {
+        e.preventDefault();
+        firstFocusableEl.current.focus();
+      }
+    },
+    [],
+  );
+
+  const onKeyDown = useCallback(
+    e => {
+      switch (e.key) {
+        case KEY_CODES.ESCAPE:
+        case KEY_CODES.ESCAPE_IE11: {
+          setMenuOpen(false);
           break;
         }
-        if (e.shiftKey) {
-          handleBackwardTab(e);
-        } else {
-          handleForwardTab(e);
+
+        case KEY_CODES.TAB: {
+          if (menuFocusables.current && menuFocusables.current.length === 1) {
+            e.preventDefault();
+            break;
+          }
+          if (e.shiftKey) {
+            handleBackwardTab(e);
+          } else {
+            handleForwardTab(e);
+          }
+          break;
         }
-        break;
-      }
 
-      default: {
-        break;
+        default: {
+          break;
+        }
       }
-    }
-  };
+    },
+    [handleBackwardTab, handleForwardTab],
+  );
 
-  const onResize = e => {
+  const onResize = useCallback(e => {
     if (e.currentTarget.innerWidth > 768) {
       setMenuOpen(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     window.addEventListener('resize', onResize);
 
     setFocusables();
+  }, [onKeyDown, onResize, setFocusables]);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (menuOpen && wrapper) {
+      wrapper.addEventListener('keydown', onKeyDown);
+    }
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('resize', onResize);
+      if (wrapper) {
+        wrapper.removeEventListener('keydown', onKeyDown);
+      }
     };
-  }, []);
+  }, [menuOpen, onKeyDown]);
 
-  const wrapperRef = useRef();
   useOnClickOutside(wrapperRef, () => setMenuOpen(false));
 
   return (
@@ -242,11 +262,7 @@ const Menu = () => {
       </Helmet>
 
       <div ref={wrapperRef}>
-        <StyledHamburgerButton
-          onClick={toggleMenu}
-          menuOpen={menuOpen}
-          ref={buttonRef}
-          aria-label="Menu">
+        <StyledHamburgerButton onClick={toggleMenu} ref={buttonRef}>
           <div className="ham-box">
             <div className="ham-box-inner" />
           </div>

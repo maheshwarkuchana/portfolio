@@ -201,50 +201,32 @@ const Jobs = () => {
     }
 
     sr.reveal(revealContainer.current, srConfig());
-  }, []);
-
-  const focusTab = () => {
-    if (tabs.current[tabFocus]) {
-      tabs.current[tabFocus].focus();
-      return;
-    }
-    // If we're at the end, go to the start
-    if (tabFocus >= tabs.current.length) {
-      setTabFocus(0);
-    }
-    // If we're at the start, move to the end
-    if (tabFocus < 0) {
-      setTabFocus(tabs.current.length - 1);
-    }
-  };
+  }, [prefersReducedMotion]);
 
   // Only re-run the effect if tabFocus changes
-  useEffect(() => focusTab(), [tabFocus]);
+  useEffect(() => {
+    if (tabs.current[tabFocus]) {
+      tabs.current[tabFocus].focus();
+    }
+  }, [tabFocus]);
 
   // Focus on tabs when using up & down arrow keys
   const onKeyDown = e => {
-    switch (e.key) {
-      case KEY_CODES.ARROW_UP: {
-        e.preventDefault();
+    if (e.keyCode === KEY_CODES.UP || e.keyCode === KEY_CODES.DOWN) {
+      e.preventDefault();
+      // Remove Bubbling since we preventDefault
+      e.stopPropagation();
+      if (e.keyCode === KEY_CODES.UP) {
         setTabFocus(tabFocus - 1);
-        break;
-      }
-
-      case KEY_CODES.ARROW_DOWN: {
-        e.preventDefault();
+      } else if (e.keyCode === KEY_CODES.DOWN) {
         setTabFocus(tabFocus + 1);
-        break;
-      }
-
-      default: {
-        break;
       }
     }
   };
 
   return (
     <StyledJobsSection id="jobs" ref={revealContainer}>
-      <h2 className="numbered-heading">Where I've Worked</h2>
+      <h2 className="numbered-heading">Where I&apos;ve Worked</h2>
 
       <div className="inner">
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={e => onKeyDown(e)}>
