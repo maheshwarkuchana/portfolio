@@ -21,13 +21,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background-color: var(--lightest-navy);
-    color: var(--lightest-slate);
+    background-color: var(--bg-lightest);
+    color: var(--text-lightest);
   }
 
   /* Provide basic, default focus styles.*/
   :focus {
-    outline: 2px dashed var(--green);
+    outline: 2px dashed var(--accent);
     outline-offset: 3px;
   }
 
@@ -46,24 +46,24 @@ const GlobalStyle = createGlobalStyle`
     focus.
   */
   :focus-visible {
-    outline: 2px dashed var(--green);
+    outline: 2px dashed var(--accent);
     outline-offset: 3px;
   }
 
   /* Scrollbar Styles */
   html {
     scrollbar-width: thin;
-    scrollbar-color: var(--dark-slate) var(--navy);
+    scrollbar-color: var(--text-dark) var(--bg-medium);
   }
   ::-webkit-scrollbar {
     width: 12px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--navy);
+    background: var(--bg-medium);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--dark-slate);
-    border: 3px solid var(--navy);
+    background-color: var(--text-dark);
+    border: 3px solid var(--bg-medium);
     border-radius: 10px;
   }
 
@@ -74,8 +74,8 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: var(--navy);
-    color: var(--slate);
+    background-color: var(--bg-medium);
+    color: var(--text-medium);
     font-family: var(--font-sans);
     font-size: var(--fz-xl);
     line-height: 1.3;
@@ -165,7 +165,7 @@ const GlobalStyle = createGlobalStyle`
   h6 {
     margin: 0 0 10px 0;
     font-weight: 600;
-    color: var(--lightest-slate);
+    color: var(--text-lightest);
     line-height: 1.1;
   }
 
@@ -194,7 +194,7 @@ const GlobalStyle = createGlobalStyle`
       counter-increment: section;
       content: '0' counter(section) '.';
       margin-right: 10px;
-      color: var(--green);
+      color: var(--accent);
       font-family: var(--font-mono);
       font-size: clamp(var(--fz-md), 3vw, var(--fz-xl));
       font-weight: 400;
@@ -213,7 +213,7 @@ const GlobalStyle = createGlobalStyle`
       width: 300px;
       height: 1px;
       margin-left: 20px;
-      background-color: var(--lightest-navy);
+      background-color: var(--bg-lightest);
 
       @media (max-width: 1080px) {
         width: 200px;
@@ -261,7 +261,7 @@ const GlobalStyle = createGlobalStyle`
 
     &:hover,
     &:focus {
-      color: var(--green);
+      color: var(--accent);
     }
 
     &.inline-link {
@@ -303,7 +303,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     & > code {
-      background-color: var(--light-navy);
+      background-color: var(--bg-light);
       color: var(--white);
       font-size: var(--fz-sm);
       border-radius: var(--border-radius);
@@ -325,28 +325,33 @@ const GlobalStyle = createGlobalStyle`
           content: '▹';
           position: absolute;
           left: 0;
-          color: var(--green);
+          color: var(--accent);
         }
       }
     }
   }
 
   blockquote {
-    border-left-color: var(--green);
-    border-left-style: solid;
-    border-left-width: 1px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 1.5rem;
+    border-left: 1px solid var(--bg-lightest);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    margin-left: -26px;
+    padding-left: 20px;
+    color: var(--text-medium);
+    font-size: var(--fz-lg);
+
+    @media (max-width: 768px) {
+      margin-left: -20px;
+    }
 
     p {
       font-style: italic;
-      font-size: 24px;
+      font-size: var(--fz-lg);
     }
   }
 
   hr {
-    background-color: var(--lightest-navy);
+    background-color: var(--bg-lightest);
     height: 1px;
     border-width: 0px;
     border-style: initial;
@@ -370,34 +375,32 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     z-index: -99;
 
-    &:hover,
-    &:focus {
-      background-color: var(--green);
-      color: var(--navy);
+    &:focus,
+    &:active {
+      background-color: var(--accent);
+      color: var(--bg-medium);
       top: 0;
       left: 0;
       width: auto;
       height: auto;
       overflow: auto;
       z-index: 99;
-      box-shadow: none;
-      transform: none;
     }
   }
 
   #logo {
-    color: var(--green);
+    color: var(--accent);
   }
 
   .overline {
-    color: var(--green);
+    color: var(--accent);
     font-family: var(--font-mono);
     font-size: var(--fz-md);
     font-weight: 400;
   }
 
   .subtitle {
-    color: var(--green);
+    color: var(--accent);
     margin: 0 0 20px 0;
     font-size: var(--fz-md);
     font-family: var(--font-mono);
@@ -411,8 +414,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
-      ${({ theme }) => theme.mixins.inlineLink};
       line-height: 1.5;
+      ${({ theme }) => theme.mixins.inlineLink};
     }
   }
 
@@ -420,7 +423,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     margin-bottom: 50px;
-    color: var(--green);
+    color: var(--accent);
 
     .arrow {
       display: block;
@@ -429,7 +432,6 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
-      ${({ theme }) => theme.mixins.inlineLink};
       font-family: var(--font-mono);
       font-size: var(--fz-sm);
       font-weight: 600;

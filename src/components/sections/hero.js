@@ -19,7 +19,7 @@ const StyledHeroSection = styled.section`
 
   h1 {
     margin: 0 0 30px 4px;
-    color: var(--green);
+    color: var(--accent);
     font-family: var(--font-mono);
     font-size: clamp(var(--fz-sm), 5vw, var(--fz-md));
     font-weight: 400;
@@ -31,7 +31,7 @@ const StyledHeroSection = styled.section`
 
   h3 {
     margin-top: 5px;
-    color: var(--slate);
+    color: var(--text-medium);
     line-height: 0.9;
   }
 
@@ -65,8 +65,8 @@ const Hero = () => {
   const four = (
     <>
       <p>
-        I’m a software engineer specializing in building (and occasionally designing) exceptional
-        digital experiences. Currently, I’m focused on building accessible, human-centered products
+        I'm a software engineer specializing in building (and occasionally designing) exceptional
+        digital experiences. Currently, I'm focused on building accessible, human-centered products
         at{' '}
         <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
           Upstatement

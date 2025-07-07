@@ -29,7 +29,7 @@ const StyledTableContainer = styled.div`
     tbody tr {
       &:hover,
       &:focus {
-        background-color: var(--light-navy);
+        background-color: var(--bg-light);
       }
     }
 
@@ -85,7 +85,7 @@ const StyledTableContainer = styled.div`
       &.title {
         padding-top: 15px;
         padding-right: 20px;
-        color: var(--lightest-slate);
+        color: var(--text-lightest);
         font-size: var(--fz-xl);
         font-weight: 600;
         line-height: 1.25;
@@ -153,7 +153,7 @@ const ArchivePage = ({ location, data }) => {
       <main>
         <header ref={revealTitle}>
           <h1 className="big-heading">Archive</h1>
-          <p className="subtitle">A big list of things I’ve worked on</p>
+          <p className="subtitle">A big list of things I've worked on</p>
         </header>
 
         <StyledTableContainer ref={revealTable}>
@@ -243,10 +243,10 @@ ArchivePage.propTypes = {
 export default ArchivePage;
 
 export const pageQuery = graphql`
-  {
+  query {
     allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/content/projects/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       edges {
         node {

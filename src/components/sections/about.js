@@ -39,7 +39,7 @@ const StyledText = styled.div`
         content: '▹';
         position: absolute;
         left: 0;
-        color: var(--green);
+        color: var(--accent);
         font-size: var(--fz-sm);
         line-height: 12px;
       }
@@ -61,7 +61,7 @@ const StyledPic = styled.div`
     position: relative;
     width: 100%;
     border-radius: var(--border-radius);
-    background-color: var(--green);
+    background-color: var(--accent);
 
     &:hover,
     &:focus {
@@ -100,12 +100,12 @@ const StyledPic = styled.div`
     &:before {
       top: 0;
       left: 0;
-      background-color: var(--navy);
-      mix-blend-mode: screen;
+      background-color: transparent;
+      mix-blend-mode: normal;
     }
 
     &:after {
-      border: 2px solid var(--green);
+      border: 2px solid var(--accent);
       top: 14px;
       left: 14px;
       z-index: -1;
@@ -142,7 +142,7 @@ const About = () => {
             </p>
 
             <p>
-              Fast-forward to today, and I’ve had the privilege of working at{' '}
+              Fast-forward to today, and I've had the privilege of working at{' '}
               <a href="https://us.mullenlowe.com/">an advertising agency</a>,{' '}
               <a href="https://starry.com/">a start-up</a>,{' '}
               <a href="https://www.apple.com/">a huge corporation</a>, and{' '}
@@ -161,7 +161,7 @@ const About = () => {
               &amp; React.
             </p>
 
-            <p>Here are a few technologies I’ve been working with recently:</p>
+            <p>Here are a few technologies I've been working with recently:</p>
           </div>
 
           <ul className="skills-list">

@@ -16,7 +16,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     {
       postsRemark: allMarkdownRemark(
         filter: { fileAbsolutePath: { regex: "/content/posts/" } }
-        sort: { order: DESC, fields: [frontmatter___date] }
+        sort: { frontmatter: { date: DESC } }
         limit: 1000
       ) {
         edges {
@@ -28,7 +28,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
       }
       tagsGroup: allMarkdownRemark(limit: 2000) {
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           fieldValue
         }
       }
@@ -67,7 +67,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 };
 
 // https://www.gatsbyjs.org/docs/node-apis/#onCreateWebpackConfig
-exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   // https://www.gatsbyjs.org/docs/debugging-html-builds/#fixing-third-party-modules
   if (stage === 'build-html' || stage === 'develop-html') {
     actions.setWebpackConfig({
@@ -87,6 +87,18 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
           },
         ],
       },
+    });
+  }
+
+  // Disable ESLint
+  if (stage === 'develop' || stage === 'build-javascript') {
+    const config = getConfig();
+    const plugins = config.plugins.filter(
+      plugin => plugin.constructor.name !== 'ESLintWebpackPlugin',
+    );
+    actions.replaceWebpackConfig({
+      ...config,
+      plugins,
     });
   }
 

@@ -1,16 +1,16 @@
 import { css } from 'styled-components';
 
 const prismColors = {
-  bg: `#112340`,
-  lineHighlight: `#1d2d50`,
-  blue: `#5ccfe6`,
-  purple: `#c3a6ff`,
-  green: `#bae67e`,
-  yellow: `#ffd580`,
-  orange: `#ffae57`,
-  red: `#ef6b73`,
-  grey: `#a2aabc`,
-  comment: `#8695b799`,
+  bg: 'var(--bg-light)',
+  lineHighlight: 'var(--bg-lightest)',
+  blue: '#5ccfe6',
+  purple: 'var(--accent-secondary)',
+  green: '#bae67e',
+  yellow: '#ffd580',
+  orange: '#ffae57',
+  red: '#ef6b73',
+  grey: 'var(--text-medium)',
+  comment: 'var(--text-dark)',
 };
 
 // https://www.gatsbyjs.org/packages/gatsby-remark-prismjs
@@ -84,7 +84,7 @@ const PrismStyles = css`
   .gatsby-highlight-code-line {
     display: block;
     background-color: ${prismColors.lineHighlight};
-    border-left: 2px solid var(--green);
+    border-left: 2px solid var(--accent);
     padding-left: calc(1em + 2px);
     padding-right: 1em;
     margin-right: -1.35em;
@@ -93,7 +93,7 @@ const PrismStyles = css`
 
   /* Language badges */
   .gatsby-highlight pre[class*='language-']::before {
-    background: var(--lightest-navy);
+    background: var(--bg-lightest);
     color: var(--white);
     font-size: var(--fz-xxs);
     font-family: var(--font-mono);
